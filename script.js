@@ -59,7 +59,6 @@ const sendBtn = document.getElementById("send-btn");
 const chatBox = document.getElementById("chat-box");
 const footerText = document.getElementById("footer-text");
 
-// عناصر الإعدادات
 const settingsBtn = document.getElementById("settings-btn");
 const settingsModal = document.getElementById("settings-modal");
 const apiKeyInput = document.getElementById("api-key-input");
@@ -67,7 +66,6 @@ const saveKeyBtn = document.getElementById("save-key-btn");
 const closeModalBtn = document.getElementById("close-modal-btn");
 const clearBtn = document.getElementById("clear-btn");
 
-// تحميل المفتاح المحفوظ في المتصفح
 let savedApiKey = localStorage.getItem("vota_api_key") || "";
 apiKeyInput.value = savedApiKey;
 
@@ -80,13 +78,11 @@ saveKeyBtn.addEventListener("click", () => {
   settingsModal.classList.add("hidden");
 });
 
-// مسح المحادثة
 clearBtn.addEventListener("click", () => {
   const lang = langSelect.value;
   chatBox.innerHTML = `<div class="message ai-msg">${translations[lang].welcome}</div>`;
 });
 
-// تغيير اللغة
 langSelect.addEventListener("change", () => {
   const lang = langSelect.value;
   const data = translations[lang];
@@ -108,7 +104,6 @@ langSelect.addEventListener("change", () => {
   });
 });
 
-// الاقتراحات السريعة
 document.querySelectorAll(".chip").forEach(chip => {
   chip.addEventListener("click", () => {
     userInput.value = chip.textContent;
@@ -164,11 +159,11 @@ async function sendMessage() {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${savedApiKey}`,
-        "HTTP-Referer": window.location.href,
+        "HTTP-Referer": "https://github.io",
         "X-Title": "Vota AI"
       },
       body: JSON.stringify({
-        model: "google/gemini-2.0-flash-exp:free",
+        model: "openrouter/free",
         messages: [
           { role: "system", content: translations[lang].systemPrompt },
           { role: "user", content: text }
@@ -179,14 +174,19 @@ async function sendMessage() {
     const data = await response.json();
     
     if (data.error) {
-      loadingSpan.textContent = "خطأ: " + data.error.message;
+      loadingSpan.textContent = "خطأ من الخادم: " + data.error.message;
       return;
     }
 
-    loadingSpan.textContent = data.choices.message.content;
+    if (data.choices && data.choices.length > 0) {
+      loadingSpan.textContent = data.choices[0].message.content;
+    } else {
+      loadingSpan.textContent = "لم يصل رد من النموذج، حاول مرة أخرى.";
+    }
+    
     chatBox.scrollTop = chatBox.scrollHeight;
   } catch (error) {
-    loadingSpan.textContent = "حدث خطأ في الاتصال. تأكد من الإنترنت ومفتاح API.";
+    loadingSpan.textContent = "خطأ في الاتصال: " + error.message;
   }
 }
 
