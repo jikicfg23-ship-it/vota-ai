@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vota AI | مساعدك الذكي</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <header>
+      <div class="logo-area">
+        <div class="vota-orb"></div>
+        <h1>Vota</h1>
+        <span class="badge">AI</span>
+      </div>
+      
+      <div class="controls">
+        <button id="clear-btn" class="icon-btn" title="مسح المحادثة">🗑️</button>
+        <button id="settings-btn" class="icon-btn" title="إعدادات المفتاح">⚙️</button>
+        <select id="language-select">
+          <option value="ar">العربية</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- نافذة إدخال وحفظ المفتاح -->
+    <div id="settings-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3 id="modal-title">إعدادات مفتاح API</h3>
+        <p id="modal-desc">يُحفظ المفتاح في متصفحك بأمان ولن يُرفع على GitHub.</p>
+        <input type="password" id="api-key-input" placeholder="sk-or-v1-...">
+        <div class="modal-actions">
+          <button id="save-key-btn" class="primary-btn">حفظ</button>
+          <button id="close-modal-btn" class="secondary-btn">إغلاق</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="chat-box" class="chat-box">
+      <div class="message ai-msg" id="welcome-msg">أهلاً بك! أنا نموذج Vota، صُممت لأساعدك في كل ما تحتاج. كيف يمكنني إلهامك اليوم؟</div>
+    </div>
+
+    <!-- اقتراحات سريعة تفاعلية -->
+    <div id="suggestions" class="suggestions">
+      <button class="chip" data-key="who">من أنت؟</button>
+      <button class="chip" data-key="idea">اقترح فكرة مشروع</button>
+      <button class="chip" data-key="poem">اكتب حكمة ملهمة</button>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="اسأل Vota أي شيء...">
+      <button id="send-btn" class="send-btn">إرسال</button>
+    </div>
+
+    <footer id="footer-text">صُمم بواسطة محمد ربيع</footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
